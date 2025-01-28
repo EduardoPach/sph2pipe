@@ -5,8 +5,66 @@
 sph2pipe is a tool for converting SPHERE-formatted digital audio data to other formats. This is an updated version based on the distributed version
 from [OpenSLR]((https://openslr.org/3/)).
 
-## Original README
+## Docker Usage
 
+This repository includes Docker support for easy building and running of sph2pipe across different platforms. The included Makefile provides simple commands for Docker operations.
+
+### Prerequisites
+
+- Docker installed on your system
+- Make (usually pre-installed on Unix-based systems)
+
+### Building and Running with Docker
+
+1. Build the Docker image:
+
+```bash
+make docker-build
+```
+
+2. Run the Docker container:
+
+```bash
+make docker-run INPUT=path/to/input.sph OUTPUT=path/to/output.wav
+```
+
+### Example
+
+```bash
+make docker-run INPUT=test/123_1pcle_shn.sph OUTPUT=output.wav
+```
+
+### Available Make Commands
+
+- `make build` - Build sph2pipe locally
+- `make clean` - Remove local build artifacts
+- `make docker-build` - Build Docker image
+- `make docker-run` - Run Docker container with input/output files
+- `make help` - Show available commands and usage examples
+
+### Docker Implementation Details
+
+The Docker setup:
+- Uses debian:bullseye-slim as base image
+- Installs minimal build dependencies (gcc, make, libc6-dev)
+- Builds sph2pipe from source
+- Creates a /data directory for file operations
+- Mounts your current directory to /data in the container
+
+The Makefile provides input validation and will:
+- Check that both INPUT and OUTPUT parameters are provided
+- Verify that the input file exists
+- Mount the current directory for file access
+- Use WAV as the default output format
+
+### Notes
+
+- Input and output paths should be relative to your current directory
+- The current directory is mounted as /data in the container
+- Default output format is WAV (can be modified in the Makefile if needed)
+- The Docker image includes all necessary dependencies
+
+## Original README
 
 <details>
 <summary>Click to expand</summary>
