@@ -1,0 +1,23 @@
+# Ignore git files
+.git
+.gitignore
+
+# Ignore build artifacts
+sph2pipe
+*.o
+
+# Ignore test outputs
+test/*.sph
+test/*.wav
+test/*.au
+test/*.aiff
+test/*.raw
+
+# Ignore documentation and other non-essential files
+*.md
+LICENSE
+*.1st
+
+# Ignore any IDE files
+.vscode/
+.idea/ 
