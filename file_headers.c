@@ -12,6 +12,9 @@
 static char hdr[90];
 static int hdrsize, origSampcount;
 
+// Add near the top with other function prototypes
+void ConvertToIeeeExtended(double num, char *bytes);
+
 /*************************************************************
  * readSphHeader
  *------------------------------------------------------------
@@ -145,8 +148,8 @@ int readSphHeader( char *hdrfname )
 	    if ( statbuf.st_size != n ) { /* if they conflict, go with the file size */
 		sampcount = ( statbuf.st_size - inphdrsize ) / ( chancount * sampsize );
 		fprintf( stderr,
-			 "Warning:%s: sample_count reset to %d to match size (%d bytes)\n",
-			inpname, sampcount, statbuf.st_size );
+			 "Warning:%s: sample_count reset to %d to match size (%lld bytes)\n",
+			inpname, sampcount, (long long)statbuf.st_size );
 	    }
 	}
     }
@@ -576,9 +579,7 @@ void writeRIFFHeader( void )
 
 #define FloatToUnsigned(f) ((unsigned long)(((long)(f - 2147483648.0)) + 2147483647L + 1))
 
-ConvertToIeeeExtended(num, bytes)
-double num;
-char *bytes;
+void ConvertToIeeeExtended(double num, char *bytes)
 {
     int sign;
     int expon;

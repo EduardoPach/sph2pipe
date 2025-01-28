@@ -121,6 +121,11 @@ static int  nwritebuf, nsampsdone, nsampswritten;
 static int  badinput;
 ulong masktab[MASKTABSIZE];
 
+// Add near the top with other function prototypes
+unsigned char pcm2alaw(short pcm_val);
+unsigned char pcm2ulaw(short pcm_val);
+ulong word_get(FILE *fp);
+
 void init_sizeof_sample( void )
 {
     sizeof_sample[TYPE_AU1]   = sizeof(char);
@@ -134,12 +139,12 @@ void init_sizeof_sample( void )
     sizeof_sample[TYPE_AU2]   = sizeof(char);
 }
 
-ulong word_get()
+ulong word_get(FILE *fp)
 {
     ulong buffer;
 
     if(nbyteget < 4) {
-	nbyteget += fread((char*) getbuf, 1, BUFSIZ, fpin);
+	nbyteget += fread((char*) getbuf, 1, BUFSIZ, fp);
 	if(nbyteget < 4) {
 	    fprintf( stderr, "premature EOF on compressed stream in %s\n", inpname );
 	    badinput++;
@@ -161,7 +166,7 @@ long uvar_get( int nbin )
     long result;
 
     if(nbitget == 0) {
-	gbuffer = word_get();
+	gbuffer = word_get(fpin);
 	nbitget = 32;
 	if ( badinput )
 	    return(result);
@@ -169,7 +174,7 @@ long uvar_get( int nbin )
 
     for(result = 0; !(gbuffer & (1L << --nbitget)); result++) {
 	if(nbitget == 0) {
-	    gbuffer = word_get();
+	    gbuffer = word_get(fpin);
 	    nbitget = 32;
 	    if ( badinput )
 		return(result);

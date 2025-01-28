@@ -105,6 +105,7 @@
 
 #include "sph_convert.h"
 #include "ulaw.h"
+#include <unistd.h>  // for getopt()
 
 static double bgnsec, endsec;
 static int bgnsamp, endsamp;
@@ -153,7 +154,7 @@ int main( int argc, char **argv )
 /* make the data buffers
  */
     if (( outbuf = (char *) malloc( STD_BUF_SIZE*2 )) == NULL ||
-	( inpbuf = (char *) malloc( STD_BUF_SIZE*2 )) == NULL ) {
+	( inpbuf = (unsigned char *) malloc( STD_BUF_SIZE*2 )) == NULL ) {
 	fprintf( stderr, "Not enough memory for %d byte buffer\n",
 		STD_BUF_SIZE*4 );
 	exit(1);
